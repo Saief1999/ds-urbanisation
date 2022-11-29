@@ -1,0 +1,94 @@
+#%RAML 1.0
+title: Employee App Specification
+version: 1
+baseUri: http://localhost:8081
+
+types:
+  Employee:
+    properties:
+      id: number
+      name: string
+      salaryInDinars: number
+    example:
+      id: 1
+      name: "Saief Zneti"
+      salaryInDinars: 2000
+      
+  DeleteResponse:
+    properties:
+      raw: array
+      affected: number
+    example:
+      raw: []
+      affected: 1
+      
+  SalaryResponse:
+    properties:
+      salary: number
+    example:
+      salary: 650
+
+resourceTypes:
+  SalaryMember:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                type: SalaryResponse
+  
+  Collection:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<item>>[]
+    post:
+      body:
+        application/json:
+          type: <<item>>
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<item>>
+  Member:
+    delete:
+      responses:
+        200:
+          body:
+            application/json:
+              type: DeleteResponse
+        
+    patch:
+      body:
+        application/json:
+          type: <<item>>
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<item>>
+
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<item>>
+
+/employees:
+  type: { Collection: {item: Employee}}
+  /{id}:
+    type: {Member: {item: Employee}}
+
+/salaries/euros/{id}:
+  type: SalaryMember
+
+/salaries/dollars/{id}:
+  type: SalaryMember
+
+
+
+

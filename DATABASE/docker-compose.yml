@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  urban-db:
+    image: 'postgres:14.3-alpine'
+    restart: always
+    container_name: urban-db
+    environment:
+      - POSTGRES_USER=urban
+      - POSTGRES_PASSWORD=urbanpass
+      - POSTGRES_DB=urban-db
+    ports:
+      - "5432:5432"
